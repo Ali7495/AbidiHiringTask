@@ -1,4 +1,7 @@
-﻿using AbidiHiringTask.Models;
+﻿using AbidiHiringTask.Application.Common_Tools;
+using AbidiHiringTask.Application.Data_Transfer_Objects;
+using AbidiHiringTask.Application.Services_Interfaces;
+using AbidiHiringTask.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,27 +9,27 @@ namespace AbidiHiringTask.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IEmployeeServices _employeeServices;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IEmployeeServices employeeServices)
         {
-            _logger = logger;
+            _employeeServices = employeeServices;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult EmployeeForm()
         {
-            return View();
+            return View(new EmployeeInputDto());
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> SubmitEmployee(EmployeeInputDto model, List<IFormFile> files, CancellationToken cancellationToken)
         {
-            return View();
+
+            ResultModel resultModel = await _employeeServices.AddEmployeeAsync(model, files, cancellationToken);
+
+            return RedirectToAction("EmployeeForm");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

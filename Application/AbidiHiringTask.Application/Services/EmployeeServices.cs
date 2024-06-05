@@ -48,6 +48,10 @@ namespace AbidiHiringTask.Application.Services
 
                 Employee employee = _mapper.Map<Employee>(employeeInput);
 
+                employee.Id = Guid.NewGuid();
+
+                employeeInput.FileAddresses.ForEach(e => { employee.EducationalDocs.Add(new() { EmployeeId = employee.Id, FileAddress = e }); });
+
                 await _unitOfWork.EmployeeRepository.AddAsync(employee, cancellationToken);
 
                 await _unitOfWork.CompleteTaskAsync(cancellationToken);
@@ -163,15 +167,14 @@ namespace AbidiHiringTask.Application.Services
                 return new ResultModel { Status = ResultStatus.Failed, Message = errorMessages.ToString() };
             }
 
-            // Check if FileAddresses is initialized and has the same count as savedFileAddresses
-            if (employeeInputDto.FileAddresses == null || employeeInputDto.FileAddresses.Count != savedFileAddresses.Count)
+            for (int i = 0; i < savedFileAddresses.Count; i++)
             {
-                return new ResultModel { Status = ResultStatus.Failed, Message = "Unexpected error occurred." };
+                employeeInputDto.FileAddresses.Add(savedFileAddresses[i]);
             }
 
-            for (int i = 0; i < employeeInputDto.FileAddresses.Count; i++)
+            if (employeeInputDto.FileAddresses == null || employeeInputDto.FileAddresses.Count != savedFileAddresses.Count)
             {
-                employeeInputDto.FileAddresses[i] = savedFileAddresses[i];
+                return new ResultModel { Status = ResultStatus.Failed, Message = "خطا در ثبت فایل ها" };
             }
 
             return new() { Status = ResultStatus.Ok };
@@ -186,7 +189,7 @@ namespace AbidiHiringTask.Application.Services
                 Directory.CreateDirectory(uploadedAddress);
             }
 
-            string savedAddress = Path.Combine(uploadedAddress,file.Name);
+            string savedAddress = Path.Combine(uploadedAddress,file.FileName);
 
             using (FileStream stream = new(savedAddress,FileMode.Create))
             {
