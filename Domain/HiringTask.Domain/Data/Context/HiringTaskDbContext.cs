@@ -30,9 +30,47 @@ namespace HiringTask.Domain.Data.Context
             modelBuilder.Entity<Employee>()
                 .Property(e => e.PersonalCode).HasMaxLength(10);
 
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e => e.NationalCode)
+                .IsUnique();
+
+            modelBuilder.Entity<Employee>()
+                .HasIndex(e=> e.PersonalCode)
+                .IsUnique();
+
 
             modelBuilder.Entity<Employee>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<EducationalDoc>().HasQueryFilter(e => !e.IsDeleted);
+        }
+
+        public override int SaveChanges()
+        {
+            UpdateAuditFields();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            UpdateAuditFields();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+
+        private void UpdateAuditFields()
+        {
+            var entries = ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                if (entry.State == EntityState.Added && entry.Entity is BasicModel added)
+                {
+                    added.CreatedDate = DateTime.Now;
+                }
+                else if(entry.State == EntityState.Modified && entry.Entity is BasicModel updated)
+                {
+                    updated.UpdatedDate = DateTime.Now;
+                }
+            }
         }
     }
 }

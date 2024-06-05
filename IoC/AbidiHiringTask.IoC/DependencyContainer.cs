@@ -1,5 +1,7 @@
 ﻿using AbidiHiringTask.Application.Common_Tools;
 using AbidiHiringTask.Application.Common_Tools.Validations;
+using AbidiHiringTask.Application.Services;
+using AbidiHiringTask.Application.Services_Interfaces;
 using AbidiHiringTask.Application.UnitOfWorkPattern;
 using FluentValidation;
 using HiringTask.Domain.Interfaces;
@@ -16,6 +18,12 @@ namespace AbidiHiringTask.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
+            #region Services
+
+            services.AddScoped<IEmployeeServices, EmployeeServices>();
+
+            #endregion
+
             #region Repositories
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

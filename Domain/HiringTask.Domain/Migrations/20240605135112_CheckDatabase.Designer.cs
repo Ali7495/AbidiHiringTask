@@ -4,6 +4,7 @@ using HiringTask.Domain.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HiringTask.Domain.Migrations
 {
     [DbContext(typeof(HiringTaskDbContext))]
-    partial class HiringTaskDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240605135112_CheckDatabase")]
+    partial class CheckDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +76,7 @@ namespace HiringTask.Domain.Migrations
 
                     b.Property<string>("NationalCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PersonalCode")
                         .IsRequired()
@@ -84,12 +87,6 @@ namespace HiringTask.Domain.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NationalCode")
-                        .IsUnique();
-
-                    b.HasIndex("PersonalCode")
-                        .IsUnique();
 
                     b.ToTable("Employees");
                 });

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\IoC\AbidiHiringTask.IoC\AbidiHiringTask.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UploadedFiles\" />
+  </ItemGroup>
+
 </Project>

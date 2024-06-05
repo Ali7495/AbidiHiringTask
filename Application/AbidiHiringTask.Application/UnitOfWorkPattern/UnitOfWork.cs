@@ -17,7 +17,7 @@ namespace AbidiHiringTask.Application.UnitOfWorkPattern
 
         public IEducationalDocRepository EducationalDocRepository { get; private set; }
 
-        public UnitOfWork(HiringTaskDbContext dbContext, IEmployeeRepository employeeRepository, IEducationalDocRepository educationalDocRepository)
+        public UnitOfWork(HiringTaskDbContext dbContext)
         {
             _dbContext = dbContext;
             EmployeeRepository = new EmployeeRepository(_dbContext);
