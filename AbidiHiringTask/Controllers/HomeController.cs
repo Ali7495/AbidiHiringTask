@@ -5,7 +5,9 @@ using AbidiHiringTask.Models;
 using AutoMapper;
 using HiringTask.Domain.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 using System.Diagnostics;
+using System.Threading;
 
 namespace AbidiHiringTask.Controllers
 {
@@ -90,6 +92,41 @@ namespace AbidiHiringTask.Controllers
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+        public async Task<IActionResult> ExportToExcel(CancellationToken cancellationToken)
+        {
+            List<EmployeeOutputDto> employees = await _employeeServices.GetEmployeesAsync(cancellationToken);
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage package = new())
+            {
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.Add("Employees");
+
+                workSheet.Cells["A1"].Value = "نام";
+                workSheet.Cells["B1"].Value = "نام خانوادگی";
+                workSheet.Cells["C1"].Value = "کد پرسنلی";
+                workSheet.Cells["D1"].Value = "کد ملی";
+
+                int row = 2;
+
+                foreach (EmployeeOutputDto employee in employees)
+                {
+                    workSheet.Cells[row, 1].Value = employee.FirstName;
+                    workSheet.Cells[row, 2].Value = employee.LastName;
+                    workSheet.Cells[row, 3].Value = employee.PersonalCode;
+                    workSheet.Cells[row, 4].Value = employee.NationalCode;
+
+                    row++;
+                }
+
+                MemoryStream memoryStream = new(package.GetAsByteArray());
+
+                string excelName = $"EmployeeList-{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+                return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
             }
         }
 

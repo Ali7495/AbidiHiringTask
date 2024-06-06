@@ -9,8 +9,10 @@ using HiringTask.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -117,6 +119,7 @@ namespace AbidiHiringTask.Application.Services
             return _mapper.Map<EmployeeOutputDto>(employee);    
         }
 
+
         #region inner methods
 
         private ResultModel ValidateEmployee(EmployeeInputDto employeeInput)
@@ -213,6 +216,8 @@ namespace AbidiHiringTask.Application.Services
         }
 
         
+
+
 
         #endregion
     }
