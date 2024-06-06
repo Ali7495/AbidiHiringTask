@@ -1,0 +1,38 @@
+﻿@model AbidiHiringTask.Application.Data_Transfer_Objects.EmployeeOutputDto
+
+<div class="modal-header">
+    <h5 class="modal-title">ویرایش </h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form asp-action="Edit" method="post">
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <label asp-for="FirstName">نام</label>
+            <input asp-for="FirstName" class="form-control" type="text" name="FirstName" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName">نام خانوادگی</label>
+            <input asp-for="LastName" class="form-control" type="text" name="LastName" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PersonalCode">کد پرسنلی</label>
+            <input asp-for="PersonalCode" class="form-control" type="text" name="PersonalCode" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NationalCode">کد ملی</label>
+            <input asp-for="NationalCode" class="form-control" type="text" name="NationalCode" />
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+            <button type="submit" class="btn btn-success">ذخیره </button>
+        </div>
+    </form>
+</div>

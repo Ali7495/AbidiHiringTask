@@ -12,6 +12,6 @@ namespace AbidiHiringTask.Application.Data_Transfer_Objects
         public string FileAddress { get; set; }
 
 
-        public EmployeeOutputDto Employee { get; set; }
+        //public EmployeeOutputDto Employee { get; set; }
     }
 }

@@ -71,7 +71,7 @@ namespace AbidiHiringTask.Application.Services
         {
             Employee employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(id, cancellationToken);
 
-            employee.IsDeleted = false;
+            employee.IsDeleted = true;
 
             await _unitOfWork.EmployeeRepository.UpdateAsync(employee);
             await _unitOfWork.CompleteTaskAsync(cancellationToken);
@@ -110,6 +110,12 @@ namespace AbidiHiringTask.Application.Services
             return resultModel;
         }
 
+        public async Task<EmployeeOutputDto> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            Employee employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(id,cancellationToken);
+
+            return _mapper.Map<EmployeeOutputDto>(employee);    
+        }
 
         #region inner methods
 
@@ -205,6 +211,8 @@ namespace AbidiHiringTask.Application.Services
             return ex.InnerException is SqlException sqlEx &&
            (sqlEx.Number == 2601 || sqlEx.Number == 2627);
         }
+
+        
 
         #endregion
     }

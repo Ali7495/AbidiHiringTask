@@ -13,6 +13,7 @@ namespace AbidiHiringTask.Application.Services_Interfaces
     {
         Task<ResultModel> AddEmployeeAsync(EmployeeInputDto employeeInput, List<IFormFile> files, CancellationToken cancellationToken);
         Task<List<EmployeeOutputDto>> GetEmployeesAsync(CancellationToken cancellationToken);
+        Task<EmployeeOutputDto> GetEmployeeByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<ResultModel> UpdateEmployeeAsync(Guid id, EmployeeInputDto employeeInput, CancellationToken cancellationToken);
         Task<ResultModel> DeleteEmployeeAsync(Guid id, CancellationToken cancellationToken);
     }

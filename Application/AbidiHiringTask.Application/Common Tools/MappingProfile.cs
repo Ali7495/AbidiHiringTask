@@ -20,6 +20,9 @@ namespace AbidiHiringTask.Application.Common_Tools
 
             CreateMap<EducationalDoc, EducationalDocOutputDto>();
             CreateMap<EducationalDocInputDto, EducationalDoc>();
+
+
+            CreateMap<EmployeeOutputDto,EmployeeInputDto>();
         }
     }
 }
